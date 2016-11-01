@@ -25,43 +25,52 @@ def main():
     args = parser.parse_args()
     if args.command == "search":
         if args.episode:
-            find_episode(args.search_string, args.season, args.episode)
+            print(find_episode(args.search_string, args.season, args.episode))
     if args.command == "casturl":
         print(args.search_string)
-        chromecast(args.search_string)
+        retrieve_mp4(args.search_string)
     if args.command == "redditstream":
         get_reddit_instance(args.search_string)
-    elif args.command == "cast":
-        count = 0
+    elif args.command == "prime":
         cast_links(find_episode(args.search_string, args.season, args.episode))
-        p = re.compile(r'.*UID(\d+)')
-        with open('./links.txt') as infile:
-            for line in infile:
-                if count == 0:
-                    chromecast(line)
-                    count == 1
-                response = raw_input("Try next link?  (type 'yes')")
-                if response == "yes":
-                    chromecast(line)
-                else:
-                    quit()
+        #p = re.compile(r'.*UID(\d+)')
+        #with open('./links.txt') as infile:
+        #    for line in infile:
+        #        if count == 0:
+        #            chromecast(line)
+        #            count == 1
+        #        response = raw_input("Try next link?  (type 'yes')")
+        #        if response == "yes":
+        #            chromecast(line)
+        #        else:
+        #            quit()
 
 def cast_links(links):
-    count = 0
-    p = re.compile(r'.*UID(\d+)')
-    unsupported = 'playedto.me'
-    with open('./links.txt') as infile:
-         for line in infile:
-             if "http://vodlocker.com" in line:
-                 if count == 0:
-                     chromecast(line)
-                     count == 1
-                 response = raw_input("Try next link? (type 'yes')" )
-                 if response =="yes":
-                     chromecast(line)
-                 else:
-                     quit()
-def chromecast(url):
+    url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', links)
+    print(url)
+    for x in url:
+        line_string=str(x)
+        url_string = line_string.splitlines()
+        for line in url_string:
+            print("Trying " + line)
+            try:
+                retrieve_mp4(line)
+            except:
+                pass
+    #p = re.compile(r'.*UID(\d+)')
+    #unsupported = 'playedto.me'
+    #with open('./links.txt') as infile:
+    #     for line in infile:
+    #         if "http://vodlocker.com" in line:
+    #             if count == 0:
+    #                 chromecast(line)
+    #                 count == 1
+    #             response = raw_input("Try next link? (type 'yes')" )
+    #             if response =="yes":
+    #                 chromecast(line)
+    #             else:
+    #                 quit()
+def retrieve_mp4(url):
     options = {
             'format': 'bestvideo/best',
             'videoformat' : "mp4",
@@ -74,6 +83,8 @@ def chromecast(url):
 
     with ydl:
             result = ydl.extract_info(url, download=False)
+            print(result)
+            quit()
 
             if 'paypal' in result:
                 quit()
@@ -94,39 +105,27 @@ def chromecast(url):
     if video == "":
         quit()
     video_url = video['url']
+    Cast_Video_link(video_url)
+
+def Cast_Video_link(video_url):
     cast_list = pychromecast.get_chromecasts_as_dict().keys()
-    try_cast = raw_input("Castable link found. Type 'yes' to cast it")
-    if try_cast != "yes":
-        quit()
+    print(cast_list)
     print("Select a chromecast:")
     for chromecast in cast_list:
         response = raw_input("%s? (type 'yes') " % str(chromecast))
         if response == "yes":
             cast_name = str(chromecast)
+            cast = pychromecast.get_chromecast(friendly_name=cast_name)
+            cast.wait()
+            # print(cast.device)
+            # print(cast.status)
+            mc = cast.media_controller
+            mc.play_media(video_url, 'video/mp4')
             break
-    cast = pychromecast.get_chromecast(friendly_name=cast_name)
-    cast.wait()
-   # print(cast.device)
-   # print(cast.status)
-    mc = cast.media_controller
-    mc.play_media(video_url, 'video/mp4')
-   # print(mc.status)
-    #link = soup.find(type="video/mp4")
-    #print(link)
-    #links = [link.get('href') for link in soup.find_all('a')]
-    #videos = []
-    #for link in links:
-    #   print(link)
-    #   if isinstance(link, str):
-    #      match = re.search('.mp4',link)
-    #      print(match)
-    #mc.play_media(url, 'video/html')
-    #mc.play_media('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', 'video/mp4')
-    #print(mc.status)
+
 def find_episode(show, ssn, epi):
-    f3=open('./links.txt','w+')
     from primewire.primewire import search
-    print(search(show,year=None,season=ssn,episode=epi),file=f3)
+    return search(show,year=None,season=ssn,episode=epi)
 
 def get_reddit_instance(sub):
     my_user_agent = "my user agent"
@@ -203,9 +202,5 @@ def Cast_Other(url):
         except:
             pass
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-
-
