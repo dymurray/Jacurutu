@@ -80,25 +80,25 @@ def retrieve_mp4(url):
     ydl = youtube_dl.YoutubeDL({'outtmpl': '%(id)s%(ext)s'})
 
     with ydl:
-            result = ydl.extract_info(url, download=False)
-            #print(result)
-            if 'entries' in result:
-                # Can be a playlist or a list of videos
-                video = result['entries'][0]
-            if 'vidzi.tv' in url:
-                print("Trying Vidzi.")
-                video_url=result['formats'][0]['url']
-                print("Stream Link: "+video_url)
-                Cast_Video_link(video_url)
-            else:
-                # Just a video
+        result = ydl.extract_info(url, download=False)
+        #print(result)
+        if 'entries' in result:
+            # Can be a playlist or a list of videos
+            video = result['entries'][0]
+        if 'vidzi.tv' in url:
+            print("Trying Vidzi.")
+            video_url=result['formats'][0]['url']
+            print("Stream Link: "+video_url)
+            Cast_Video_link(video_url)
+        else:
+            # Just a video
+            quit()
+            video = result
+            if video == "":
                 quit()
-                video = result
-                if video == "":
-                    quit()
-                video_url = video['url']
-                print("Stream Link: "+video_url)
-                Cast_Video_link(video_url)
+            video_url = video['url']
+            print("Stream Link: "+video_url)
+            Cast_Video_link(video_url)
 
         
 def Cast_Video_link(video_url):
@@ -120,19 +120,20 @@ def Cast_Video_link(video_url):
 
 
 def local_cast(video_location):
-    cast_list = pychromecast.get_chromecasts_as_dict().keys()
+    cast_list = pychromecast.get_chromecasts()
     print(cast_list)
     print("Select a chromecast:")
     for chromecast in cast_list:
         response = raw_input("%s? (type 'yes') " % str(chromecast))
         if response == "yes":
             cast_name = str(chromecast)
-            cast = pychromecast.get_chromecast(friendly_name=cast_name)
-            cast.wait()
+            #cast = pychromecast.get_chromecast(friendly_name=cast_name)
+            chromecast.wait()
             # print(cast.device)
             # print(cast.status)
-            mc = cast.media_controller
+            mc = chromecast.media_controller
             mc.play_media(video_location, 'video/mp4')
+            print(mc.status)
             #mc.play_media(/home/cmurray/Downloads/The.Shining.1980.US.1080p.BluRay.H264.AAC-RARBG/The.Shining.1980.US.1080p.BluRay.H264.AAC-RARBG.mp4, 'video/mp4')
             break
         else:
@@ -191,6 +192,7 @@ def Cast_720p(split_url):
     print("Trying 720p...")
     string_url = str(split_url)
     url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', string_url)
+
 def Cast_720p(split_url):
     print("Trying 720p...")
     string_url = str(split_url)
