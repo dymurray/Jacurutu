@@ -5,5 +5,5 @@ $ npm install
 
 # To run dev server
 ```
-$ npm run
+$ npm start
 ```
