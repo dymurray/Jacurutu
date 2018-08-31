@@ -6,6 +6,6 @@ import Form from './Form';
 import TicketProps from './TicketProps';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<div><App /><Form /><TicketProps /></div>, document.getElementById('root'));
+ReactDOM.render(<div><App /><Form /></div>, document.getElementById('root'));
 //ReactDOM.render(<TicketType />, document.getElementById('root'));
 registerServiceWorker();

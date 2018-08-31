@@ -2,18 +2,24 @@ import React, { Component } from 'react';
 class Form extends Component {
   constructor(props) {
     super(props);
-    this.state = {value: 'coconut'};
+      this.state = {
+          numberOfTickets: 2,
+          ticketStyle: 'generalAdmission'
+      };
   
-    this.handleChange = this.handleChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  handleInputChange(event) {
+    this.setState({
+      ticketStyle: event.target.ticketStyle,
+      numberOfTickets: 0
+    });
   }
 
   handleSubmit(event) {
-    alert('Select the type of tickecting event: ' + this.state.value);
+    alert('Type of tickecting event: ' + this.state.ticketStyle);
     event.preventDefault();
   }
 
@@ -21,12 +27,21 @@ class Form extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          Pick your favorite flavor:
-          <select value={this.state.value} onChange={this.handleChange}>
+          Select the seating style for your event:
+          <select value={this.state.ticketStyle} onChange={this.handleInputChange}>
             <option value="general">General Admission</option>
             <option value="seating">Seating Chart</option>
             <option value="general_seating">Combination</option>
           </select>
+        </label>
+        <br />
+        <label>
+          Enter the number of tickets to issue:
+          <input 
+            value={this.state.numberOfTickets}
+            onChange={this.handleInputChange}
+            type="number"
+          />
         </label>
         <input type="submit" value="Submit" />
       </form>
