@@ -10,9 +10,6 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Jacurutu Ticketing</h1>
         </header>
-        <p className="App-intro">
-          The tickets must flow
-        </p>
       </div>
     );
   }
