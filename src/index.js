@@ -24,5 +24,4 @@ ReactDOM.render(
 </div>,
   document.getElementById('root')
 );
-//ReactDOM.render(<TicketType />, document.getElementById('root'));
 registerServiceWorker();
