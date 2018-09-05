@@ -44,8 +44,10 @@ class Form extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
- 	<div class="form-group">
+     <div class="card col-md-6 col-centered">
+       <div class="card-body">
+        <form onSubmit={this.handleSubmit}>
+ 	  <div class="form-group">
 		<label for="eventType">Type of event</label>
 	    	<select class="form-control" id="eventType"
 	    	value={this.state.ticketStyle} onChange={this.handleTicketStyleChange}>
@@ -53,20 +55,22 @@ class Form extends Component {
 	    		<option value="seating">Seating Chart</option>
 	    		<option value="general_seating">Combination</option>
 	    	</select>
-	</div>
-	<div class="form-group">
-		<label for="numTickets">Number of tickets</label>
-	    	<input type="number" class="form-control" placeholder="Enter number of tickets" onChange={this.handleNumberOfTicketsChange} required/>
-		<div class="invalid-feedback">
+	  </div>
+	  <div class="form-group">
+		  <label for="numTickets">Number of tickets</label>
+	    	  <input type="number" class="form-control" placeholder="Enter number of tickets" onChange={this.handleNumberOfTicketsChange} required/>
+		  <div class="invalid-feedback">
 	    		<p>Please provide a valid number of tickets.</p>
-	    	</div>
-	</div>
-	<div class="form-group">
-	    <label for="eventDescription">Event description</label>
-	    <textarea class="form-control" id="eventDescription" rows="3" onChange={this.handleDescriptionChange} placeholder="Enter a description of the event that you are holding"></textarea>
-	</div>
-        <button type="submit" value="Submit" class="btn btn-secondary">Submit</button>
-      </form>
+	    	  </div>
+	  </div>
+	  <div class="form-group">
+	      <label for="eventDescription">Event description</label>
+	      <textarea class="form-control" id="eventDescription" rows="3" onChange={this.handleDescriptionChange} placeholder="Enter a description of the event that you are holding"></textarea>
+  	  </div>
+          <button type="submit" value="Submit" class="btn btn-secondary">Submit</button>
+        </form>
+      </div>
+    </div>
     );
   }
 }

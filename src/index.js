@@ -13,13 +13,6 @@ ReactDOM.render(
 <div>
   <App />
   <br />
-  <div class="row container-fluid"> 
-  	<div class="card col-md-6 col-centered">
-		<div class="card-body">
-			<Form />
-		</div>
-  	</div>
-  </div>
 </div>,
   document.getElementById('root')
 );
