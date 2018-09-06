@@ -18,7 +18,7 @@ class Ticket extends Component {
       <div className="card col-md-6 col-centered">
         <div className="card-body">
 	  <h1>Ticket information goes here</h1>
-	  <img src={this.state.qrCode} />
+	  <img alt="Jacurutu Ticket" src={this.state.qrCode} />
 	</div>
       </div>
     )
