@@ -8,3 +8,7 @@ body {
   float: none;
   margin: 0 auto;
 }
+
+.no-padding {
+  padding: 0 0 0 0;
+}
