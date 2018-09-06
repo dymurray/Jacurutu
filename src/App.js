@@ -41,7 +41,7 @@ class App extends Component {
 	  <button className="btn btn-secondary" onClick={this.showForm}>Show Form</button>
 	  <button className="btn btn-secondary" onClick={this.showTicket}>Show Ticket</button>
 	</div>
-     	<div className="row container-fluid">
+     	<div className="row container-fluid no-margin">
 	  {this.state.showForm ? <Form /> : null }
 	  {this.state.showTicket ? <Ticket /> : null}
 	</div>
