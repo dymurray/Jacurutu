@@ -3,55 +3,93 @@ class Form extends Component {
   constructor(props) {
     super(props);
       this.state = {
-          numberOfTickets: 10,
-          ticketStyle: 'generalAdmission'
+          numberOfTickets: 0,
+          ticketStyle: 'generalAdmission',
+	  description: null,
+	  ticketPrice: 0
       };
   
-    this.handleTicketChange = this.handleTicketChange.bind(this);
-    this.handleSeatChange = this.handleSeatChange.bind(this);
+    //bind all of the handlers for user selected input
+    this.handleTicketStyleChange = this.handleTicketStyleChange.bind(this);
+    this.handleNumberOfTicketsChange = this.handleNumberOfTicketsChange.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.handleTicketPriceChange = this.handleTicketPriceChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleTicketChange(event) {
+  //update the ticket style based on user input
+  handleTicketStyleChange(event) {
     this.setState({
-      numberOfTickets: event.target.numberOfTickets
+      ticketStyle: event.currentTarget.value
+    });
+  }
+  
+  //update the number of tickets that the user wants to create
+  handleNumberOfTicketsChange(event) {
+    this.setState({
+      numberOfTickets: event.currentTarget.value
     });
   }
 
-  handleSeatChange(event) {
+  //update price of the tickets
+  handleTicketPriceChange(event) {
     this.setState({
-      ticketStyle: event.target.ticketStyle
+      ticketPrice: event.currentTarget.value
     });
   }
+ 
+  //update the description that the user enters
+  handleDescriptionChange(event) {
+    this.setState({
+      description: event.currentTarget.value
+    });
+  }
+
+  //user submitted the form
   handleSubmit(event) {
-    alert('Type of tickecting event: ' + this.state.ticketStyle +
-      '\nNumber of tickets: ' + this.state.numberOfTickets
-    );
+    alert('Type of tickecting event: ' + this.state.ticketStyle + 
+	    '\nNumber of tickets: ' + this.state.numberOfTickets + 
+	    '\nPrice of tickets: ' + this.state.ticketPrice +
+	    '\nDescription: ' + this.state.description);
     event.preventDefault();
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Select the seating style for your event:
-          <select value={this.state.ticketStyle} onChange={this.handleSeatChange}>
-            <option value="general">General Admission</option>
-            <option value="seating">Seating Chart</option>
-            <option value="general_seating">Combination</option>
-          </select>
-        </label>
-        <br />
-        <label>
-          Enter the number of tickets to issue:
-          <input 
-            value={this.state.numberOfTickets}
-            onChange={this.handleTicketChange}
-            type="number"
-          />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+     <div className="card col-md-6 col-centered">
+       <div className="card-body">
+        <form onSubmit={this.handleSubmit}>
+ 	  <div className="form-group">
+		<label for="eventType">Type of event</label>
+	    	<select className="form-control" id="eventType"
+	    	value={this.state.ticketStyle} onChange={this.handleTicketStyleChange}>
+	    		<option value="general">General Admission</option>
+	    		<option value="seating">Seating Chart</option>
+	    		<option value="general_seating">Combination</option>
+	    	</select>
+	  </div>
+	  <div className="form-group">
+		  <label for="numTickets">Number of tickets</label>
+	    	  <input id="numTickets" type="number" className="form-control" placeholder="Enter number of tickets" onChange={this.handleNumberOfTicketsChange} required/>
+		  <div className="invalid-feedback">
+	    		<p>Please provide a valid number of tickets.</p>
+	    	  </div>
+	  </div>
+	  <div>
+	      <label for="ticketPrice">Ticket price</label>
+	      <input id="ticketPrice" type="number" className="form-control" 
+	    min="0.01" max="100000" step=".01" 
+	    placeholder="Enter price of the ticket" 
+	    onChange={this.handleTicketPriceChange} required />
+	  </div>
+	  <div className="form-group">
+	      <label for="eventDescription">Event description</label>
+	      <textarea className="form-control" id="eventDescription" rows="3" onChange={this.handleDescriptionChange} placeholder="Enter a description of the event that you are holding"></textarea>
+  	  </div>
+          <button type="submit" value="Submit" class="btn btn-secondary">Submit</button>
+        </form>
+      </div>
+    </div>
     );
   }
 }
