@@ -12,8 +12,10 @@ class Ticket extends Component {
   
   //pust function handlers here
   }
+
+  const qrCodeURL = "https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=";
   
-  render() {
+  render() 
     return ( 
       <div className="card col-md-6 col-centered">
         <div className="card-body">
