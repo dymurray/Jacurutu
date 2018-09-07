@@ -16,3 +16,8 @@ body {
 .no-margin {
   margin: 0 0 0 0;
 }
+
+.qrCode {
+  display: block;
+  margin: auto;
+}
