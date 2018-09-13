@@ -19,7 +19,10 @@ class Spinner extends Component {
     var showSpinnerClass = !this.state.showSpinner ? 'hidden' : 'app-center align-middle';
     return (
       <div id="overlay" className={showSpinnerClass}>
-	    <img src={logo} className="App-logo mx-auto" alt="logo" />
+	    <div className="container vertical-center">
+	      <img src={logo} className="App-spinner mx-auto" alt="logo" />
+	    </div>
+
       </div>
     );
   }
