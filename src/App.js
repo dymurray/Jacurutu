@@ -59,8 +59,17 @@ class App extends Component {
             <img src={logo} className="App-logo" alt="logo" />
             <h1 className="App-title">Jacurutu Ticketing</h1>
           </header>
-	  <div className="row">
-	    <div className="col">
+	  <div className="jumbotron">
+	    <h1>Welcome to Jacurutu, the world's best ticketing website</h1>
+	    <p>We offer vendors the ability to accurately track their tickets at a small processing fee</p>
+	    <hr className="my-4" />
+	    <p>Jacurutu is built upon the Bitcoin Cash block chain which allows for accurate tracking and tokenizing of your tickets.  If someone attempts to resell your ticket then you will know about it.</p>
+	    <p className="lead">
+	      <a className="btn btn-secondary" href="#">Learn More</a>
+	    </p>
+	  </div>
+	  <div className="row no-margin">
+	    <div className="col no-margin">
 	      <button className="btn btn-secondary" 
 	        onClick={this.showForm}>Show Form</button>
 	      <button className="btn btn-secondary" 

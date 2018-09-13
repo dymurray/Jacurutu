@@ -60,7 +60,7 @@ class Form extends Component {
        <div className="card-body">
         <form onSubmit={this.handleSubmit}>
  	  <div className="form-group">
-		<label for="eventType">Type of event</label>
+		<label htmlFor="eventType">Type of event</label>
 	    	<select className="form-control" id="eventType"
 	    	value={this.state.ticketStyle} onChange={this.handleTicketStyleChange}>
 	    		<option value="general">General Admission</option>
