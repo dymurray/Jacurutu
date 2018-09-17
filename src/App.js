@@ -63,7 +63,7 @@ class App extends Component {
 	    <h1>Welcome to Jacurutu, the world's best ticketing website</h1>
 	    <p>We offer vendors the ability to accurately track their tickets at a small processing fee</p>
 	    <hr className="my-4" />
-	    <p>Jacurutu is built upon the Bitcoin Cash block chain which allows for accurate tracking and tokenizing of your tickets.  If someone attempts to resell your ticket then you will know about it.</p>
+	    <p>Jacurutu is built upon the Bitcoin (BCH) block chain which allows for accurate tracking and tokenizing of your tickets.  If someone attempts to resell your ticket then you will know about it.</p>
 	    <p className="lead">
 	      <a className="btn btn-secondary" href="#">Learn More</a>
 	    </p>
@@ -86,7 +86,7 @@ class App extends Component {
 	  {this.state.showTicket ? <Ticket /> : null}
 	  {this.state.showEvent ? <Event /> : null}
 	</div>
-	<MoneyButton />
+	
 	<Spinner ref="spinner"/>
       </div>
     );
