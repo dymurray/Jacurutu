@@ -6,7 +6,8 @@ class Form extends Component {
           numberOfTickets: 0,
           ticketStyle: 'generalAdmission',
 	  description: null,
-	  ticketPrice: 0
+	  ticketPrice: 0,
+	  date: null
       };
   
     //bind all of the handlers for user selected input
@@ -14,6 +15,7 @@ class Form extends Component {
     this.handleNumberOfTicketsChange = this.handleNumberOfTicketsChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleTicketPriceChange = this.handleTicketPriceChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -45,9 +47,16 @@ class Form extends Component {
     });
   }
 
+  handleDateChange(event) {
+    this.setState({
+      date:event.currentTarget.value
+    });
+  }
+
   //user submitted the form
   handleSubmit(event) {
-    alert('Type of tickecting event: ' + this.state.ticketStyle + 
+    alert('Type of tickecting event: ' + this.state.ticketStyle +
+	    '\nDate of event: '+ this.state.date +
 	    '\nNumber of tickets: ' + this.state.numberOfTickets + 
 	    '\nPrice of tickets: ' + this.state.ticketPrice +
 	    '\nDescription: ' + this.state.description);
@@ -60,33 +69,48 @@ class Form extends Component {
        <div className="card-body">
         <form onSubmit={this.handleSubmit}>
  	  <div className="form-group">
-		<label for="eventType">Type of event</label>
-	    	<select className="form-control" id="eventType"
-	    	value={this.state.ticketStyle} onChange={this.handleTicketStyleChange}>
-	    		<option value="general">General Admission</option>
-	    		<option value="seating">Seating Chart</option>
-	    		<option value="general_seating">Combination</option>
-	    	</select>
+	    <label htmlFor="eventType">Type of event</label>
+	    <select className="form-control" id="eventType"
+	      value={this.state.ticketStyle} 
+	      onChange={this.handleTicketStyleChange}>
+	    	<option value="general">General Admission</option>
+	    	<option value="seating">Seating Chart</option>
+	    	<option value="general_seating">Combination</option>
+	    </select>
 	  </div>
 	  <div className="form-group">
-		  <label for="numTickets">Number of tickets</label>
-	    	  <input id="numTickets" type="number" className="form-control" placeholder="Enter number of tickets" onChange={this.handleNumberOfTicketsChange} required/>
-		  <div className="invalid-feedback">
-	    		<p>Please provide a valid number of tickets.</p>
-	    	  </div>
+	    <label htmlFor="eventDate">Date</label>
+	    <input id="eventDate" type="date" 
+	      className="form-control" 
+	      placeholder="Enter the date of the event" 
+	      onChange={this.handleDateChange}
+	    required/>
+	  </div>
+	  <div className="form-group">
+	    <label htmlFor="numTickets">Number of tickets</label>
+	    <input id="numTickets" type="number" className="form-control" 
+	      placeholder="Enter number of tickets" 
+	      onChange={this.handleNumberOfTicketsChange} required/>
+	    <div className="invalid-feedback">
+	      <p>Please provide a valid number of tickets.</p>
+	    </div>
 	  </div>
 	  <div>
-	      <label for="ticketPrice">Ticket price</label>
-	      <input id="ticketPrice" type="number" className="form-control" 
-	    min="0.01" max="100000" step=".01" 
-	    placeholder="Enter price of the ticket" 
-	    onChange={this.handleTicketPriceChange} required />
+	    <label htmlFor="ticketPrice">Ticket price</label>
+	    <input id="ticketPrice" type="number" className="form-control" 
+	      min="0.01" max="100000" step=".01" 
+	      placeholder="Enter price of the ticket" 
+	      onChange={this.handleTicketPriceChange} required />
 	  </div>
 	  <div className="form-group">
-	      <label for="eventDescription">Event description</label>
-	      <textarea className="form-control" id="eventDescription" rows="3" onChange={this.handleDescriptionChange} placeholder="Enter a description of the event that you are holding"></textarea>
+	    <label htmlFor="eventDescription">Event description</label>
+	    <textarea className="form-control" id="eventDescription" 
+	      rows="3" onChange={this.handleDescriptionChange} 
+	      placeholder="Enter a description of the event that you are holding">
+	    </textarea>
   	  </div>
-          <button type="submit" value="Submit" class="btn btn-secondary">Submit</button>
+          <button type="submit" value="Submit" 
+	    className="btn btn-secondary">Submit</button>
         </form>
       </div>
     </div>

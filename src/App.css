@@ -3,8 +3,12 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 0.25s linear;
   height: 80px;
+}
+
+.App-spinner {
+  animation: App-logo-spin infinite 1.5s linear;
+  height: 150px;
 }
 
 .App-header {

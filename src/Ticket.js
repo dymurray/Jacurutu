@@ -7,18 +7,44 @@ class Ticket extends Component {
     var publicKey = "bitcoincash:qqpzugjwdxak2cc4yz96khkk5p8v3s55ts8um72rga"
     this.state = {
       publicKey: publicKey,
-      qrCode: chartApi + publicKey
+      qrCode: chartApi + publicKey,
+      chartApi: chartApi
     }
   
-  //pust function handlers here
+  //put function handlers here
+    this.generateNewQrCode = this.generateNewQrCode.bind(this);
   }
   
-  render() {
+  generateNewQrCode(event) {
+    var newAddress = document.getElementById("addressInput").value;
+    this.setState({
+      publicKey: newAddress,
+      qrCode: this.state.chartApi + newAddress
+    });
+    
+  }
+
+
+  render() { 
     return ( 
       <div className="card col-md-6 col-centered">
         <div className="card-body">
 	  <h1>Ticket information goes here</h1>
-	  <img alt="Jacurutu Ticket" src={this.state.qrCode} />
+	  <div className="row">
+	    <div className="col-md col-centered">
+	      <div className="input-group">
+	        <input id="addressInput" type="text" className="form-control" placeholder="Enter your public address" defaultValue={this.state.publicKey}/>    
+	        <span className="input-group-btn">
+	          <button className="btn btn-secondary" onClick={this.generateNewQrCode}>Generate Code</button>
+	        </span>
+	      </div>
+	    </div>
+	  </div>
+	  <div className="row">
+	    <div className="col-md col-centered mx-auto">
+	      <img alt="Jacurutu Ticket" className="qrCode" src={this.state.qrCode} />
+	    </div>
+	  </div>
 	</div>
       </div>
     )
