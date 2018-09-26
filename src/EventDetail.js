@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import MoneyButton from '@moneybutton/react-money-button';
 
-class Event extends Component {
+class EventDetail extends Component {
   constructor (props) {
     super(props);
     
@@ -14,9 +15,23 @@ class Event extends Component {
     //put function handlers here
   }
 
+  GenerateTicketVolume=()=>
+  {
+    var randomTicketsAvailable = Math.floor(Math.random() * 1000) + 1;
+    var randomTicketsSold = Math.floor(Math.random() * randomTicketsAvailable) + 1;
+    this.setState({
+      ticketsSold: randomTicketsSold,
+      totalTickets: randomTicketsAvailable
+    });
+  }
+  
+  componentDidMount() {
+    this.GenerateTicketVolume();
+  }
+
   render() {
     return (
-      <div className="card col-md-6 col-centered text-center">
+      <div id={"eventID-" + this.props.eventID} className="card collapse col-md-6 col-centered text-center no-padding">
 	<div className="card-header">
 	  <h1>{this.state.eventName}</h1>
 	</div>
@@ -37,6 +52,22 @@ class Event extends Component {
 	      {this.state.ticketsSold}
 	    </div>
 	  </div>
+	  <div className="mb-wrapper container">
+	    <div className="row">
+	      <div className="col-md col-centered">
+	        <div className="money-button mx-auto">
+	          <MoneyButton 
+                    to="qqpzugjwdxak2cc4yz96khkk5p8v3s55ts8um72rga"
+                    amount="45"
+                    currency="USD"
+                    type='buy'
+	            label='Get your tickets!'
+                    devMode={true}
+	         />
+	        </div>
+	      </div>
+	    </div>
+	  </div>  
 	</div>
       </div>
     )
@@ -44,4 +75,4 @@ class Event extends Component {
 
 }
 
-export default Event;
+export default EventDetail;

@@ -3,15 +3,16 @@ import logo from './logo.svg';
 import './App.css';
 import Form from './Form.js';
 import Ticket from './Ticket.js';
-import Event from './Event.js';
+import EventList from './EventList.js';
 import Spinner from './Spinner.js';
-import MoneyButton from './MoneyButton.js';
+//import MoneyButton from './MoneyButton.js';
+import MoneyButton from '@moneybutton/react-money-button';
 //let MoneyButton = require('react-money-button')
 
 class App extends Component {
   constructor(props) {
     super(props);
-      this.state = {
+    this.state = {
 	  showForm: false,
 	  showTicket: false,
 	  showEvent: false
@@ -52,6 +53,8 @@ class App extends Component {
    }
   
    render() {
+    //TODO: remove
+    const test = [{eventName:"Kevin's Event", eventID: 1234}, {eventName: "Dylan's Event", eventID: 4567}];
     return (
       <div className="App">
 	<div className="container-fluid app-center no-padding">
@@ -75,7 +78,7 @@ class App extends Component {
 	      <button className="btn btn-secondary" 
 	        onClick={this.showTicket}>Show Ticket</button>
 	      <button className="btn btn-secondary" 
-	        onClick={this.showEvent}>Show Event</button>
+	        onClick={this.showEvent}>Show Event List</button>
 	      <button className="btn btn-secondary" 
 	        onClick={this.showLoader}>Show Spinner</button>
 	    </div>
@@ -84,9 +87,8 @@ class App extends Component {
      	<div className="row container-fluid no-margin">
 	  {this.state.showForm ? <Form /> : null }
 	  {this.state.showTicket ? <Ticket /> : null}
-	  {this.state.showEvent ? <Event /> : null}
+	  {this.state.showEvent ? <EventList KevinTest={test[0]} /> : null}
 	</div>
-	
 	<Spinner ref="spinner"/>
       </div>
     );
