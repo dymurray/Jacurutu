@@ -29,7 +29,9 @@ class EventInfo extends Component {
     </div>
     <div className="row">
        <div className="col-md">
-         <EventDetail eventID={this.props.eventInfo.eventID} />
+         <EventDetail eventID={this.props.eventInfo.eventID} 
+	  eventName={this.props.eventInfo.eventName}
+	  />
        </div>
      </div>
   </div>

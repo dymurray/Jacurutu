@@ -33,7 +33,7 @@ class EventDetail extends Component {
     return (
       <div id={"eventID-" + this.props.eventID} className="card collapse col-md-6 col-centered text-center no-padding">
 	<div className="card-header">
-	  <h1>{this.state.eventName}</h1>
+	  <h1>{this.props.eventName}</h1>
 	</div>
 	<div className="card-body">
 	  <h4>Total Tickets Sold: {this.state.ticketsSold}</h4>
