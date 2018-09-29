@@ -9,7 +9,9 @@ class EventDetail extends Component {
       eventID: 12345,
       eventName: "Kevin's super fun party",
       totalTickets: 500,
-      ticketsSold: 100
+      ticketsSold: 100,
+      ticketPrice: "20",
+      priceCurrency: "USD"
     }
     
     //put function handlers here
@@ -19,19 +21,23 @@ class EventDetail extends Component {
   {
     var randomTicketsAvailable = Math.floor(Math.random() * 1000) + 1;
     var randomTicketsSold = Math.floor(Math.random() * randomTicketsAvailable) + 1;
+    var randomPrice = Math.floor(Math.random() * 50) + 20;
     this.setState({
       ticketsSold: randomTicketsSold,
-      totalTickets: randomTicketsAvailable
+      totalTickets: randomTicketsAvailable,
+      ticketPrice: String(randomPrice)
     });
   }
   
   componentDidMount() {
     this.GenerateTicketVolume();
   }
+  
+  
 
   render() {
     return (
-      <div id={"eventID-" + this.props.eventID} className="card collapse col-md-6 col-centered text-center no-padding">
+      <div id={"eventID-" + this.props.eventID} className="card collapse col-md col-centered text-center no-padding">
 	<div className="card-header">
 	  <h1>{this.props.eventName}</h1>
 	</div>
@@ -50,22 +56,6 @@ class EventDetail extends Component {
 	      aria-valuemin="0" 
 	      aria-valuemax={this.state.totalTickets}>
 	      {this.state.ticketsSold}
-	    </div>
-	  </div>
-	  <div className="mb-wrapper container">
-	    <div className="row">
-	      <div className="col-md col-centered">
-	        <div className="money-button mx-auto">
-	          <MoneyButton 
-                    to="qqpzugjwdxak2cc4yz96khkk5p8v3s55ts8um72rga"
-                    amount="45"
-                    currency="USD"
-                    type='buy'
-	            label='Get your tickets!'
-                    devMode={true}
-	         />
-	        </div>
-	      </div>
 	    </div>
 	  </div>  
 	</div>

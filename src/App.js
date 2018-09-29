@@ -5,9 +5,7 @@ import Form from './Form.js';
 import Ticket from './Ticket.js';
 import EventList from './EventList.js';
 import Spinner from './Spinner.js';
-//import MoneyButton from './MoneyButton.js';
 import MoneyButton from '@moneybutton/react-money-button';
-//let MoneyButton = require('react-money-button')
 
 class App extends Component {
   constructor(props) {
@@ -67,14 +65,14 @@ class App extends Component {
 	    <p>We offer vendors the ability to accurately track their tickets at a small processing fee</p>
 	    <hr className="my-4" />
 	    <p>Jacurutu is built upon the Bitcoin (BCH) block chain which allows for accurate tracking and tokenizing of your tickets.  If someone attempts to resell your ticket then you will know about it.</p>
-	    <p className="lead">
+	    {/* <!-- <p className="lead">
 	      <a className="btn btn-secondary" href="#">Learn More</a>
-	    </p>
+	    </p> */}
 	  </div>
 	  <div className="row no-margin">
 	    <div className="col no-margin">
 	      <button className="btn btn-secondary" 
-	        onClick={this.showForm}>Show Form</button>
+	        onClick={this.showForm}>Create Event</button>
 	      <button className="btn btn-secondary" 
 	        onClick={this.showTicket}>Show Ticket</button>
 	      <button className="btn btn-secondary" 
