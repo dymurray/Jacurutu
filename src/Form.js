@@ -55,11 +55,55 @@ class Form extends Component {
 
   //user submitted the form
   handleSubmit(event) {
+        const Bitcoin = require('bitcointoken')
+        const BitcoinWallet = Bitcoin.Wallet
+        const BitcoinDb = Bitcoin.BitcoinDb
+        const BitcoinToken = Bitcoin.Token
+        const privkey = 'tprv8ZgxMBicQKsPe4PCLLeDcD9SeGK7HfBJjruGJjQwuVJ19gCM3Hqam5ygx62ZHPtB16bmSsw1qjFEo2UQVWSYgcXbo8KFTrDMoDcQBog979N'
+        const privkey2 = 'tprv8ZgxMBicQKsPcseFfdHR7u6neRCfR2CLmRQv4h37LjUtkfsDAhdZy1nBW9SFPF85Nxa42fxyRFRWADZo6Jeokvut9PCdjLimyzkCaq9qzWU'
+        const wallet2 = BitcoinWallet.fromHdPrivateKey(privkey2)
+      const wallet1 = BitcoinWallet.fromHdPrivateKey(privkey)
+        const bitcoinDb1 = new BitcoinDb(wallet1)
+      const token = new BitcoinToken(bitcoinDb1)
+              token.getBalance().then(bal => {
+                  console.log("balance")
+                  console.log(bal)
+              })
+      token.create({
+          data: {
+              balance: this.state.numberOfTickets,
+              price: this.state.ticketPrice,
+              description: this.state.description,
+              date: this.state.date,
+              type: this.state.ticketStyle,
+          }}).then(result => {
+              console.log("token created")
+              console.log(result)
+              token.getBalance().then(bal => {
+                  console.log("balance")
+                  console.log(bal)
+              })
+          }).catch(err => {
+              console.log(err)
+          })
+        const data = { 
+            ticketStyle: this.state.ticketStyle,
+            date: this.state.date,
+            numberOfTickets: this.state.numberOfTickets,
+            ticketPrice: this.state.ticketPrice,
+            description: this.state.description,
+        }
+      getdata(bitcoinDb1, data).then(result => {
+          console.log(result)
+      }).catch(err => {
+          console.log(err)
+      });
     alert('Type of tickecting event: ' + this.state.ticketStyle +
 	    '\nDate of event: '+ this.state.date +
 	    '\nNumber of tickets: ' + this.state.numberOfTickets + 
 	    '\nPrice of tickets: ' + this.state.ticketPrice +
-	    '\nDescription: ' + this.state.description);
+        '\nDescription: ' + this.state.description);
+
     event.preventDefault();
   }
 
@@ -117,5 +161,21 @@ class Form extends Component {
     );
   }
 }
+async function getdata(db, data) {
+    try {
+        let id = await db.put({data}).then(res => {
+            return res
+        });
+        console.log(id)
+        let returndata = await db.get(id).then(res => {
+            return res
+        });
+        return returndata;
+    } catch(e) {
+        console.log(e);
+        throw e;
+    }
+}
+
 
 export default Form;
