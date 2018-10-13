@@ -19,7 +19,7 @@ class EventDetail extends Component {
 
   GenerateTicketVolume=()=>
   {
-    var randomTicketsAvailable = Math.floor(Math.random() * 1000) + 1;
+    var randomTicketsAvailable = this.props.numberOfTickets>0 ? this.props.numberOfTickets : Math.floor(Math.random() * 1000) + 1;
     var randomTicketsSold = Math.floor(Math.random() * randomTicketsAvailable) + 1;
     var randomPrice = Math.floor(Math.random() * 50) + 20;
     this.setState({

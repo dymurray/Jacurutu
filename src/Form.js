@@ -6,9 +6,10 @@ class Form extends Component {
 	  eventName: null,
 	  numberOfTickets: 0,
           ticketStyle: 'generalAdmission',
-	  description: null,
-	  ticketPrice: 0,
-	  date: null,
+	  eventDescription: null,
+	  eventPrice: 0,
+	  eventDate: null,
+	  currency: "USD",
 	  masterPrivateKey: 'tprv8ZgxMBicQKsPdjJKAVVDbBizg59Ue2nfTKn9LN3qSjfg2Sd35igCWc18ApFiMaQ25zCGxrhaiBBEP4uPdL9Ydxhk8XUdkaWVo4Gb4DBz1Ec'
       };
   
@@ -48,20 +49,20 @@ class Form extends Component {
   //update price of the tickets
   handleTicketPriceChange(event) {
     this.setState({
-      ticketPrice: event.currentTarget.value
+      eventPrice: event.currentTarget.value
     });
   }
  
   //update the description that the user enters
   handleDescriptionChange(event) {
     this.setState({
-      description: event.currentTarget.value
+      eventDescription: event.currentTarget.value
     });
   }
 
   handleDateChange(event) {
     this.setState({
-      date:event.currentTarget.value
+      eventDate:event.currentTarget.value
     });
   }
 
@@ -103,12 +104,12 @@ class Form extends Component {
    //console.log(id);
    //console.log(wallet.getAddress());
 
-    alert('Event name: ' + this.state.eventName +
-	    '\nType of tickecting event: ' + this.state.ticketStyle +
-	    '\nDate of event: '+ this.state.date +
-	    '\nNumber of tickets: ' + this.state.numberOfTickets + 
-	    '\nPrice of tickets: ' + this.state.ticketPrice +
-	    '\nDescription: ' + this.state.description);
+    //alert('Event name: ' + this.state.eventName +
+    // 	    '\nType of tickecting event: ' + this.state.ticketStyle +
+    // 	    '\nDate of event: '+ this.state.date +
+    // 	    '\nNumber of tickets: ' + this.state.numberOfTickets + 
+    //	    '\nPrice of tickets: ' + this.state.ticketPrice +
+    //	    '\nDescription: ' + this.state.description);
     return false;
   }
 
