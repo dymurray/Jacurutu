@@ -3,20 +3,32 @@ class Form extends Component {
   constructor(props) {
     super(props);
       this.state = {
-          numberOfTickets: 0,
+	  eventName: null,
+	  numberOfTickets: 0,
           ticketStyle: 'generalAdmission',
 	  description: null,
 	  ticketPrice: 0,
-	  date: null
+	  date: null,
+	  masterPrivateKey: 'tprv8ZgxMBicQKsPdjJKAVVDbBizg59Ue2nfTKn9LN3qSjfg2Sd35igCWc18ApFiMaQ25zCGxrhaiBBEP4uPdL9Ydxhk8XUdkaWVo4Gb4DBz1Ec'
       };
   
     //bind all of the handlers for user selected input
+    this.handleNameChange = this.handleNameChange.bind(this);
     this.handleTicketStyleChange = this.handleTicketStyleChange.bind(this);
     this.handleNumberOfTicketsChange = this.handleNumberOfTicketsChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleTicketPriceChange = this.handleTicketPriceChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.putDataSuccess = this.putDataSuccess.bind(this);
+    this.getDataSuccess = this.getDataSuccess.bind(this);
+  }
+  
+  //update event name based on user input
+  handleNameChange(event) {
+    this.setState({
+      eventName: event.currentTarget.value
+    });
   }
 
   //update the ticket style based on user input
@@ -53,58 +65,51 @@ class Form extends Component {
     });
   }
 
+  async putDataSuccess(result) {
+    const BitcoinToken = require('bitcointoken')
+    //console.log(BitcoinToken)
+    const id = result.txId;
+    const bitcoinDb = new BitcoinToken.BitcoinDb()
+    console.log("bitcoinDB: " + bitcoinDb)
+    bitcoinDb.get(result).then(this.getDataSuccess);
+    console.log("transaction id: " + id);
+  }
+
+  async getDataSuccess(result) {
+    const data = result.data
+    console.log("ditcoindb data: " + data.eventName)
+  }
   //user submitted the form
-  handleSubmit(event) {
-        const Bitcoin = require('bitcointoken')
-        const BitcoinWallet = Bitcoin.Wallet
-        const BitcoinDb = Bitcoin.BitcoinDb
-        const BitcoinToken = Bitcoin.Token
-        const privkey = 'tprv8ZgxMBicQKsPe4PCLLeDcD9SeGK7HfBJjruGJjQwuVJ19gCM3Hqam5ygx62ZHPtB16bmSsw1qjFEo2UQVWSYgcXbo8KFTrDMoDcQBog979N'
-        const privkey2 = 'tprv8ZgxMBicQKsPcseFfdHR7u6neRCfR2CLmRQv4h37LjUtkfsDAhdZy1nBW9SFPF85Nxa42fxyRFRWADZo6Jeokvut9PCdjLimyzkCaq9qzWU'
-        const wallet2 = BitcoinWallet.fromHdPrivateKey(privkey2)
-      const wallet1 = BitcoinWallet.fromHdPrivateKey(privkey)
-        const bitcoinDb1 = new BitcoinDb(wallet1)
-      const token = new BitcoinToken(bitcoinDb1)
-              token.getBalance().then(bal => {
-                  console.log("balance")
-                  console.log(bal)
-              })
-      token.create({
-          data: {
-              balance: this.state.numberOfTickets,
-              price: this.state.ticketPrice,
-              description: this.state.description,
-              date: this.state.date,
-              type: this.state.ticketStyle,
-          }}).then(result => {
-              console.log("token created")
-              console.log(result)
-              token.getBalance().then(bal => {
-                  console.log("balance")
-                  console.log(bal)
-              })
-          }).catch(err => {
-              console.log(err)
-          })
-        const data = { 
-            ticketStyle: this.state.ticketStyle,
-            date: this.state.date,
-            numberOfTickets: this.state.numberOfTickets,
-            ticketPrice: this.state.ticketPrice,
-            description: this.state.description,
-        }
-      getdata(bitcoinDb1, data).then(result => {
-          console.log(result)
-      }).catch(err => {
-          console.log(err)
-      });
-    alert('Type of tickecting event: ' + this.state.ticketStyle +
+  async handleSubmit(event) {
+   event.preventDefault();
+   const masterPrivateKey = 'tprv8ZgxMBicQKsPdjJKAVVDbBizg59Ue2nfTKn9LN3qSjfg2Sd35igCWc18ApFiMaQ25zCGxrhaiBBEP4uPdL9Ydxhk8XUdkaWVo4Gb4DBz1Ec'
+   const BitcoinToken = require('bitcointoken');
+   const Wallet = BitcoinToken.Wallet;
+   const BitcoinDb = BitcoinToken.BitcoinDb;
+   const wallet = Wallet.fromHdPrivateKey(masterPrivateKey);
+   const bitcoinDb = new BitcoinDb(wallet);
+   var data = this.state;
+   var idData = 0;
+   const dataInfo = {
+	     txId: 'fe39af3d3ea79fe08e0685ce3f8cd53a019d2d77fb199073d72c24337c2946e6',
+	     outputNumber: 0
+   }
+   bitcoinDb.get(dataInfo).then(data => console.log(data))
+
+   bitcoinDb.put({data}).then(this.putDataSuccess);
+
+   
+   //wallet.getBalance().then(balance => console.log(balance))
+   //console.log(id);
+   //console.log(wallet.getAddress());
+
+    alert('Event name: ' + this.state.eventName +
+	    '\nType of tickecting event: ' + this.state.ticketStyle +
 	    '\nDate of event: '+ this.state.date +
 	    '\nNumber of tickets: ' + this.state.numberOfTickets + 
 	    '\nPrice of tickets: ' + this.state.ticketPrice +
-        '\nDescription: ' + this.state.description);
-
-    event.preventDefault();
+	    '\nDescription: ' + this.state.description);
+    return false;
   }
 
   render() {
@@ -113,6 +118,13 @@ class Form extends Component {
        <div className="card-body">
         <form onSubmit={this.handleSubmit}>
  	  <div className="form-group">
+            <label htmlFor="eventName">Name of event</label>
+	    <input id="eventName" type="string"
+	      className="form-control"
+	      placeholder="Enter the name of the event"
+	      onChange={this.handleNameChange} />
+	  </div>
+	  <div className="form-group">
 	    <label htmlFor="eventType">Type of event</label>
 	    <select className="form-control" id="eventType"
 	      value={this.state.ticketStyle} 
@@ -161,21 +173,5 @@ class Form extends Component {
     );
   }
 }
-async function getdata(db, data) {
-    try {
-        let id = await db.put({data}).then(res => {
-            return res
-        });
-        console.log(id)
-        let returndata = await db.get(id).then(res => {
-            return res
-        });
-        return returndata;
-    } catch(e) {
-        console.log(e);
-        throw e;
-    }
-}
-
 
 export default Form;

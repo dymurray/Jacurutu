@@ -23,8 +23,8 @@ class EventInfo extends Component {
 	  <div className="col-md">
 	    <MoneyButton
               to="qqpzugjwdxak2cc4yz96khkk5p8v3s55ts8um72rga"
-              amount="50"
-              currency="USD"
+              amount={this.props.eventInfo.eventPrice}
+              currency={this.props.eventInfo.currency}
               type='buy'
               label='Get your tickets!'
               buttonID={"moneyButton-" + this.props.eventID}
