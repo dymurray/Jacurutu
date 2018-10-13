@@ -45,6 +45,9 @@ class Ticket extends Component {
 	      <img alt="Jacurutu Ticket" className="qrCode" src={this.state.qrCode} />
 	    </div>
 	  </div>
+	  <div className="camera-input">
+	    <input type="file" accept="image/*" capture="camera" />
+	  </div>
 	</div>
       </div>
     )

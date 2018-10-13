@@ -8,13 +8,19 @@ class EventList extends Component {
     
     this.state = {
 	    events: [{eventID: '123', eventName: "Kevin's Cool Party", 
-		    eventDate: "08/26/2019", 
+		    eventDate: "08/26/2019",
+		    eventPrice: "45",
+		    currency: "USD",
 	            eventDescription: "Come one come all as we celebrate another great year and look forward to the next hockey season."},
 	       {eventID: '456', eventName: "Dylan's Cool Party", 
 	            eventDate: "04/12/2019",
+		    eventPrice: "35",
+		    currency: "USD",
 	            eventDescription: "Since I'm getting married I thought it would be totally cool to throw a party"},
 	       {eventID: '789', eventName: "Connor's Cool Party",
-	            eventDate: "04/12/2019", 
+	            eventDate: "04/12/2019",
+		    eventPrice: "15",
+		    currency: "USD",
 	            eventDescription: "I guess we should celebrate my return from my awesome trip to London. Honestly I just really wanted a long description for an event to see how it would display.  I think that this description is getting to be long enough" }]
 
     }
