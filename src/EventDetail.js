@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import MoneyButton from '@moneybutton/react-money-button';
 
-class Event extends Component {
+class EventDetail extends Component {
   constructor (props) {
     super(props);
     
@@ -8,17 +9,37 @@ class Event extends Component {
       eventID: 12345,
       eventName: "Kevin's super fun party",
       totalTickets: 500,
-      ticketsSold: 100
+      ticketsSold: 100,
+      ticketPrice: "20",
+      priceCurrency: "USD"
     }
     
     //put function handlers here
   }
 
+  GenerateTicketVolume=()=>
+  {
+    var randomTicketsAvailable = Math.floor(Math.random() * 1000) + 1;
+    var randomTicketsSold = Math.floor(Math.random() * randomTicketsAvailable) + 1;
+    var randomPrice = Math.floor(Math.random() * 50) + 20;
+    this.setState({
+      ticketsSold: randomTicketsSold,
+      totalTickets: randomTicketsAvailable,
+      ticketPrice: String(randomPrice)
+    });
+  }
+  
+  componentDidMount() {
+    this.GenerateTicketVolume();
+  }
+  
+  
+
   render() {
     return (
-      <div className="card col-md-6 col-centered text-center">
+      <div id={"eventID-" + this.props.eventID} className="card collapse col-md col-centered text-center no-padding">
 	<div className="card-header">
-	  <h1>{this.state.eventName}</h1>
+	  <h1>{this.props.eventName}</h1>
 	</div>
 	<div className="card-body">
 	  <h4>Total Tickets Sold: {this.state.ticketsSold}</h4>
@@ -36,7 +57,7 @@ class Event extends Component {
 	      aria-valuemax={this.state.totalTickets}>
 	      {this.state.ticketsSold}
 	    </div>
-	  </div>
+	  </div>  
 	</div>
       </div>
     )
@@ -44,4 +65,4 @@ class Event extends Component {
 
 }
 
-export default Event;
+export default EventDetail;
