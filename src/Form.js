@@ -74,6 +74,8 @@ class Form extends Component {
     console.log("bitcoinDB: " + bitcoinDb)
     bitcoinDb.get(result).then(this.getDataSuccess);
     console.log("transaction id: " + id);
+    
+    const rawResponse = await fetch('http://206.189.180.144:8000/transaction/' + id, {method: 'POST'})
   }
 
   async getDataSuccess(result) {
@@ -91,11 +93,6 @@ class Form extends Component {
    const bitcoinDb = new BitcoinDb(wallet);
    var data = this.state;
    var idData = 0;
-   const dataInfo = {
-	     txId: 'fe39af3d3ea79fe08e0685ce3f8cd53a019d2d77fb199073d72c24337c2946e6',
-	     outputNumber: 0
-   }
-   bitcoinDb.get(dataInfo).then(data => console.log(data))
 
    bitcoinDb.put({data}).then(this.putDataSuccess);
 
