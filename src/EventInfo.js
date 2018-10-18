@@ -4,7 +4,7 @@ import MoneyButton from '@moneybutton/react-money-button';
 
 class EventInfo extends Component {
   constructor (props) {
-    super (props);
+  super (props);
     
   }
 

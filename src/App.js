@@ -85,7 +85,7 @@ class App extends Component {
 	  </div>
 	</div>
      	<div className="row container-fluid no-margin">
-	  {this.state.showForm ? <Form /> : null }
+	  {this.state.showForm ? <Form toggleSpinner={this.refs.spinner.toggleSpinner}/> : null }
 	  {this.state.showTicket ? <Ticket /> : null}
 	  {this.state.showEvent ? <EventList KevinTest={test[0]} /> : null}
 	</div>

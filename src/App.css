@@ -30,6 +30,20 @@
   min-width: 250px !important;
 }
 
+.jac-alert {	
+  -webkit-transition: 0.75s;
+  -moz-transition: 0.75s;
+  -o-transition: 0.75s;
+  transition: 0.75s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.jac-alert.show {
+  opacity: 1;
+  visibility: visible;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
