@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import MoneyButton from '@moneybutton/react-money-button';
 
 class EventDetail extends Component {
   constructor (props) {

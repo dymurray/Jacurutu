@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import Spinner from './Spinner.js';
+import $ from 'jquery';
+import Alert from './Alert.js';
+
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +27,7 @@ class Form extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.putDataSuccess = this.putDataSuccess.bind(this);
     this.getDataSuccess = this.getDataSuccess.bind(this);
+    this.emptyForm = this.emptyForm.bind(this);
   }
   
   //update event name based on user input
@@ -66,6 +71,20 @@ class Form extends Component {
     });
   }
 
+  emptyForm() {
+    document.getElementById("eventForm").reset();
+    this.setState( {
+          eventName: null,
+          numberOfTickets: 0,
+          ticketStyle: 'generalAdmission',
+          eventDescription: '',
+          eventPrice: 0,
+          eventDate: null
+    })
+    this.alert.showAlert();
+    this.props.toggleSpinner();
+  }
+
   async putDataSuccess(result) {
     const BitcoinToken = require('bitcointoken')
     //console.log(BitcoinToken)
@@ -75,7 +94,7 @@ class Form extends Component {
     bitcoinDb.get(result).then(this.getDataSuccess);
     console.log("transaction id: " + id);
     
-    const rawResponse = await fetch('http://206.189.180.144:8000/transaction/' + id, {method: 'POST'})
+    const rawResponse = await fetch('http://206.189.180.144:8000/transaction/' + id, {method: 'POST'}).then(this.emptyForm());
   }
 
   async getDataSuccess(result) {
@@ -84,6 +103,7 @@ class Form extends Component {
   }
   //user submitted the form
   async handleSubmit(event) {
+   this.props.toggleSpinner();
    event.preventDefault();
    const masterPrivateKey = 'tprv8ZgxMBicQKsPdjJKAVVDbBizg59Ue2nfTKn9LN3qSjfg2Sd35igCWc18ApFiMaQ25zCGxrhaiBBEP4uPdL9Ydxhk8XUdkaWVo4Gb4DBz1Ec'
    const BitcoinToken = require('bitcointoken');
@@ -114,13 +134,13 @@ class Form extends Component {
     return (
      <div className="card col-md-6 col-centered">
        <div className="card-body">
-        <form onSubmit={this.handleSubmit}>
+        <form id="eventForm" onSubmit={this.handleSubmit}>
  	  <div className="form-group">
             <label htmlFor="eventName">Name of event</label>
 	    <input id="eventName" type="string"
 	      className="form-control"
 	      placeholder="Enter the name of the event"
-	      onChange={this.handleNameChange} />
+	      onChange={this.handleNameChange} required/>
 	  </div>
 	  <div className="form-group">
 	    <label htmlFor="eventType">Type of event</label>
@@ -167,6 +187,7 @@ class Form extends Component {
 	    className="btn btn-secondary">Submit</button>
         </form>
       </div>
+      <Alert ref={instance => {this.alert = instance}}  message="Successfully created the event" />
     </div>
     );
   }
