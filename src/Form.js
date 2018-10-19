@@ -94,7 +94,7 @@ class Form extends Component {
     bitcoinDb.get(result).then(this.getDataSuccess);
     console.log("transaction id: " + id);
     
-    const rawResponse = await fetch('http://206.189.180.144:8000/transaction/' + id, {method: 'POST'}).then(this.emptyForm());
+    const rawResponse = await fetch('https://api.bchflip.com/transaction/' + id, {method: 'POST'}).then(this.emptyForm());
   }
 
   async getDataSuccess(result) {

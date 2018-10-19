@@ -4,7 +4,7 @@ import { GoogleLogin } from 'react-google-login-component';
 const BitcoinToken = require('bitcointoken');
 const Wallet = BitcoinToken.Wallet;
 var createGoogleUser = async function(id) {
-    const getResponse = await(fetch('http://localhost:8000/user/' + id, {method: 'GET'}).then(resp => {
+    const getResponse = await(fetch('https://api.bchflip.com/user/' + id, {method: 'GET'}).then(resp => {
         if (resp.ok) {
             return resp.json();
         } else {
@@ -15,7 +15,7 @@ var createGoogleUser = async function(id) {
         console.log("User does not exist yet, creating...")
         const wallet = new Wallet()
         console.log(wallet.getHdPrivateKey())
-        const rawResponse = fetch('http://localhost:8000/user/' + id, {
+        const rawResponse = fetch('https://api.bchflip.com/user/' + id, {
             method: 'POST',
             body: JSON.stringify({xprivkey: wallet.getHdPrivateKey()})}
         );

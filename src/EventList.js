@@ -19,7 +19,7 @@ class EventList extends Component {
 
   //event list is loaded, find all of the active events
   async componentDidMount() {
-    var ipAddress = "http://206.189.180.144:8000/"
+    var ipAddress = "https://api.bchflip.com/"
     await fetch(ipAddress + "transactions").then(this.getTransactionsResponse);
     
     //console.log(this.state.eventTransactions)
