@@ -7,6 +7,7 @@ import EventList from './EventList.js';
 import Spinner from './Spinner.js';
 import MoneyButton from '@moneybutton/react-money-button';
 import Wallet from 'bitcointoken'
+import Login from './Login.js'
 
 class App extends Component {
   constructor(props) {
@@ -14,10 +15,12 @@ class App extends Component {
     this.state = {
 	  showForm: false,
 	  showTicket: false,
+	  showLogin: false,
 	  showEvent: false
       };
 
     this.showForm = this.showForm.bind(this);
+    this.showLogin = this.showLogin.bind(this);
     this.showTicket = this.showTicket.bind(this);
     this.showEvent = this.showEvent.bind(this);
     this.showLoader = this.showLoader.bind(this);
@@ -27,6 +30,7 @@ class App extends Component {
      this.setState({
        showForm: true,
        showTicket: false,
+	showLogin: false,
        showEvent: false
      });
    }
@@ -35,13 +39,24 @@ class App extends Component {
      this.setState({
 	showForm: false,
 	showTicket: true,
+	showLogin: false,
 	showEvent: false
      });
    }
    
+   showLogin(event) {
+     this.setState({
+	showForm: false,
+	showTicket: false,
+	showLogin: true,
+	showEvent: false
+     });
+   }
+
    showEvent(event) {
      this.setState({
 	showForm: false,
+	showLogin: false,
 	showTicket: false,
 	showEvent: true
      });
@@ -80,12 +95,15 @@ class App extends Component {
 	      <button className="btn btn-secondary" 
 	        onClick={this.showEvent}>Show Event List</button>
 	      <button className="btn btn-secondary" 
+	        onClick={this.showLogin}>Show Login</button>
+	      <button className="btn btn-secondary" 
 	        onClick={this.showLoader}>Show Spinner</button>
 	    </div>
 	  </div>
 	</div>
      	<div className="row container-fluid no-margin">
 	  {this.state.showForm ? <Form toggleSpinner={this.refs.spinner.toggleSpinner}/> : null }
+	  {this.state.showLogin ? <Login /> : null}
 	  {this.state.showTicket ? <Ticket /> : null}
 	  {this.state.showEvent ? <EventList KevinTest={test[0]} /> : null}
 	</div>
