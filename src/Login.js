@@ -40,7 +40,7 @@ class Login extends Component{
           wallet.getBalance().then(bal => {
               console.log("google id: "+ resp.googleId)
               console.log("balance: " + bal)
-
+	      console.log("address: " + wallet.getAddress())
           })
         
       })
