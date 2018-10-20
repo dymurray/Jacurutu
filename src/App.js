@@ -8,6 +8,7 @@ import Spinner from './Spinner.js';
 import MoneyButton from '@moneybutton/react-money-button';
 import Wallet from 'bitcointoken'
 import Login from './Login.js'
+import User from './User.js'
 
 class App extends Component {
   constructor(props) {
@@ -16,7 +17,9 @@ class App extends Component {
 	  showForm: false,
 	  showTicket: false,
 	  showLogin: false,
-	  showEvent: false
+	  showEvent: false,
+	  showUser: false,
+	  userInfo: null
       };
 
     this.showForm = this.showForm.bind(this);
@@ -24,6 +27,7 @@ class App extends Component {
     this.showTicket = this.showTicket.bind(this);
     this.showEvent = this.showEvent.bind(this);
     this.showLoader = this.showLoader.bind(this);
+    this.showUser = this.showUser.bind(this);
   }
  
    showForm(event) {
@@ -64,12 +68,21 @@ class App extends Component {
 
    showLoader(event) {
      this.refs.spinner.toggleSpinner();
+     console.log(this.userInfo !== null);
    }
+
+  showUser(user) {
+    console.log(user)
+    this.setState({userInfo: user}); 
+    this.setState({ showUser: true });
+  }
   
    render() {
     //TODO: remove
     const test = [{eventName:"Kevin's Event", eventID: 1234}, {eventName: "Dylan's Event", eventID: 4567}];     
-    
+    this.userInfo = null;
+    console.log(this.refs.userInfo);
+    console.log(this.userInfo !== null);
     return (
       <div className="App">
 	<div className="container-fluid app-center no-padding">
@@ -87,6 +100,9 @@ class App extends Component {
 	    </p> */}
 	  </div>
 	  <div className="row no-margin">
+            {this.state.showUser ? <User userInfo={this.state.userInfo} /> : null }
+	  </div>
+	  <div className="row no-margin">
 	    <div className="col no-margin">
 	      <button className="btn btn-secondary" 
 	        onClick={this.showForm}>Create Event</button>
@@ -102,10 +118,10 @@ class App extends Component {
 	  </div>
 	</div>
      	<div className="row container-fluid no-margin">
-	  {this.state.showForm ? <Form toggleSpinner={this.refs.spinner.toggleSpinner}/> : null }
-	  {this.state.showLogin ? <Login /> : null}
+	  {this.state.showForm ? <Form toggleSpinner={this.refs.spinner.toggleSpinner} userInfo={this.state.userInfo}/> : null }
+	  {this.state.showLogin ? <Login ref={instance => this.userInfo = instance} showUser={this.showUser} /> : null}
 	  {this.state.showTicket ? <Ticket /> : null}
-	  {this.state.showEvent ? <EventList KevinTest={test[0]} /> : null}
+	  {this.state.showEvent ? <EventList /> : null}
 	</div>
 	<Spinner ref="spinner"/>
       </div>
