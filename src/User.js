@@ -7,7 +7,6 @@ class User extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="card col-md-10101010101010101010 col-centered">
         <div className="card-body">

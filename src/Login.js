@@ -15,7 +15,6 @@ var createGoogleUser = async function(id) {
         console.log(err)
         console.log("User does not exist yet, creating...")
         const wallet = new Wallet()
-        console.log(wallet.getHdPrivateKey())
         const rawResponse = fetch('https://api.bchflip.com/user/' + id, {
             method: 'POST',
             body: JSON.stringify({xprivkey: wallet.getHdPrivateKey()})}
@@ -49,7 +48,7 @@ class Login extends Component{
 	      console.log(err)
 	      console.log("User did not exist in the DB.  Creating user via error handling");
 	      const wallet = new Wallet();
-	      console.log(wallet.getHdPrivateKey())
+	      
 	      //TODO: figure out what dylan is doing here....
 	      return null;
 	    })
@@ -104,7 +103,7 @@ class Login extends Component{
     //anything else you want to do(save to localStorage)...
     // createGoogleUser(googleId).then(resp => {
      this.createUserFromGoogle(googleId).then(resp => {
-	  console.log(resp)
+	  
           const wallet = Wallet.fromHdPrivateKey(resp.xprivkey)
           wallet.getBalance().then(bal => {
               console.log("google id: "+ resp.googleId)

@@ -68,11 +68,9 @@ class App extends Component {
 
    showLoader(event) {
      this.refs.spinner.toggleSpinner();
-     console.log(this.userInfo !== null);
    }
 
   showUser(user) {
-    console.log(user)
     this.setState({userInfo: user}); 
     this.setState({ showUser: true });
   }
@@ -80,9 +78,8 @@ class App extends Component {
    render() {
     //TODO: remove
     const test = [{eventName:"Kevin's Event", eventID: 1234}, {eventName: "Dylan's Event", eventID: 4567}];     
-    this.userInfo = null;
-    console.log(this.refs.userInfo);
-    console.log(this.userInfo !== null);
+    
+    
     return (
       <div className="App">
 	<div className="container-fluid app-center no-padding">

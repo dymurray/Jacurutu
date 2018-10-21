@@ -88,13 +88,12 @@ class Form extends Component {
   async putDataSuccess(result) {
     const BitcoinToken = require('bitcointoken')
     //console.log(BitcoinToken)
-    const id = result.txId;
+    const txId = result.txId;
     const bitcoinDb = new BitcoinToken.BitcoinDb()
     console.log("bitcoinDB: " + bitcoinDb)
     bitcoinDb.get(result).then(this.getDataSuccess);
-    console.log("transaction id: " + id);
     
-    const rawResponse = await fetch('https://api.bchflip.com/transaction/' + id, {method: 'POST'}).then(this.emptyForm());
+    const rawResponse = await fetch('https://api.bchflip.com/user/' + this.props.userInfo.googleId + '/transaction/' + txId, {method: 'POST'}).then(this.emptyForm());
   }
 
   async getDataSuccess(result) {
@@ -131,6 +130,7 @@ class Form extends Component {
   }
 
   render() {
+    console.log(this.props.userInfo);
     return (
      <div className="card col-md-6 col-centered">
        <div className="card-body">
