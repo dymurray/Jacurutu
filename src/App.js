@@ -14,6 +14,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+	  showHome: true,
 	  showForm: false,
 	  showTicket: false,
 	  showLogin: false,
@@ -28,14 +29,16 @@ class App extends Component {
     this.showEvent = this.showEvent.bind(this);
     this.showLoader = this.showLoader.bind(this);
     this.showUser = this.showUser.bind(this);
+    this.goHome = this.goHome.bind(this);
   }
  
    showForm(event) {
      this.setState({
        showForm: true,
        showTicket: false,
-	showLogin: false,
-       showEvent: false
+       showLogin: false,
+       showEvent: false,
+       showHome: false
      });
    }
 
@@ -44,7 +47,8 @@ class App extends Component {
 	showForm: false,
 	showTicket: true,
 	showLogin: false,
-	showEvent: false
+	showEvent: false,
+	showHome: false
      });
    }
    
@@ -53,7 +57,8 @@ class App extends Component {
 	showForm: false,
 	showTicket: false,
 	showLogin: true,
-	showEvent: false
+	showEvent: false,
+	showHome: false
      });
    }
 
@@ -62,7 +67,18 @@ class App extends Component {
 	showForm: false,
 	showLogin: false,
 	showTicket: false,
-	showEvent: true
+	showEvent: true,
+	showHome: false
+     });
+   }
+
+   goHome(event) {
+     this.setState({
+       showForm: false, 
+       showLogin: false,
+       showTicket: false,
+       showEvent: false,
+       showHome: true
      });
    }
 
@@ -82,6 +98,30 @@ class App extends Component {
     
     return (
       <div className="App">
+	<nav className="navbar navbar-dark bg-dark text-white navbar-expand-lg">
+	  <button className="navbar-toggler mr-auto" type="button" data-toggle="collapse" data-target="#navigationButtons" aria-controls="navigationButtons" aria-expanded="false" aria-label="Toggle navigation">
+	    <span className="navbar-toggler-icon"></span>
+	  </button>
+	  <a className="navbar-brand mr-auto my-auto">
+	    <img src={logo} width="30" height="30" className="d-inline-block align-top" />
+	    Jacurutu
+	  </a>
+	    {/*<button className="navbar-toggler mr-auto" type="button" data-toggle="collapse" data-target="#navigationButtons" aria-controls="navigationButtons" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>*/}
+	  <div className="collapse navbar-collapse" id="navigationButtons">
+            <div className="navbar-nav">
+	      <a className="nav-item nav-link" href="#/" onClick={this.goHome}>Home</a>
+	      <a className="nav-item nav-link" href="#/" onClick={this.showForm}>Create Event</a>
+	      <a className="nav-item nav-link" href="#/" onClick={this.showEvent}>Show Events</a>
+	      <a className="nav-item nav-link" href="#/" onClick={this.showTicket}>Redeem Ticket</a>
+	    </div>
+	  </div>     
+	  <div className="navbar-nav mr-sm-2">
+	      <a className="nav-item nav-link" href="#/" onClick={this.showLogin}>Login</a>
+	  </div>
+	</nav>
+	{this.state.showHome ? 
 	<div className="container-fluid app-center no-padding">
           <header className="App-header app-center">
             <img src={logo} className="App-logo" alt="logo" />
@@ -95,11 +135,11 @@ class App extends Component {
 	    {/* <!-- <p className="lead">
 	      <a className="btn btn-secondary" href="#">Learn More</a>
 	    </p> */}
-	  </div>
+	  </div> 
 	  <div className="row no-margin">
             {this.state.showUser ? <User userInfo={this.state.userInfo} /> : null }
 	  </div>
-	  <div className="row no-margin">
+	    {/*<div className="row no-margin">
 	    <div className="col no-margin">
 	      <button className="btn btn-secondary" 
 	        onClick={this.showForm}>Create Event</button>
@@ -112,9 +152,10 @@ class App extends Component {
 	      <button className="btn btn-secondary" 
 	        onClick={this.showLoader}>Show Spinner</button>
 	    </div>
-	  </div>
-	</div>
-     	<div className="row container-fluid no-margin">
+	  </div>*/}
+	</div> 
+     	: null}
+	<div className="row container-fluid no-margin">
 	  {this.state.showForm ? <Form toggleSpinner={this.refs.spinner.toggleSpinner} userInfo={this.state.userInfo}/> : null }
 	  {this.state.showLogin ? <Login ref={instance => this.userInfo = instance} showUser={this.showUser} /> : null}
 	  {this.state.showTicket ? <Ticket /> : null}

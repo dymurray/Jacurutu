@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Spinner from './Spinner.js';
-import $ from 'jquery';
 import Alert from './Alert.js';
 
 class Form extends Component {
@@ -82,19 +80,17 @@ class Form extends Component {
           eventPrice: 0,
           eventDate: null
     })
-    this.succcessAlert.showThenHideAlert();
+    this.successAlert.showThenHideAlert();
     this.props.toggleSpinner();
   }
 
   async putDataSuccess(result) {
+    console.log("inside pus data success");
     const BitcoinToken = require('bitcointoken')
-    //console.log(BitcoinToken)
+    console.log(result)
     const txId = result.txId;
-    const bitcoinDb = new BitcoinToken.BitcoinDb()
-    console.log("bitcoinDB: " + bitcoinDb)
-    bitcoinDb.get(result).then(this.getDataSuccess);
     
-    const rawResponse = await fetch('https://api.bchflip.com/user/' + this.props.userInfo.googleId + '/transaction/' + txId, {method: 'POST'}).then(this.emptyForm());
+    await fetch('https://api.bchflip.com/user/' + this.props.userInfo.googleId + '/transaction/' + txId, {method: 'POST'}).then(this.emptyForm());
   }
 
   async getDataSuccess(result) {
@@ -105,28 +101,33 @@ class Form extends Component {
   async handleSubmit(event) {
    this.props.toggleSpinner();
    event.preventDefault();
-   const masterPrivateKey = 'tprv8ZgxMBicQKsPdjJKAVVDbBizg59Ue2nfTKn9LN3qSjfg2Sd35igCWc18ApFiMaQ25zCGxrhaiBBEP4uPdL9Ydxhk8XUdkaWVo4Gb4DBz1Ec'
+   //const masterPrivateKey = this.props.userInfo.xprivkey;
+   const masterPrivateKey = 'tprv8ZgxMBicQKsPdjJKAVVDbBizg59Ue2nfTKn9LN3qSjfg2Sd35igCWc18ApFiMaQ25zCGxrhaiBBEP4uPdL9Ydxhk8XUdkaWVo4Gb4DBz1Ec';
+   console.log(masterPrivateKey);
    const BitcoinToken = require('bitcointoken');
    const Wallet = BitcoinToken.Wallet;
-   const BitcoinDb = BitcoinToken.BitcoinDb;
+   const BitcoinDb = BitcoinToken.Db;
+   console.log("before wallet creation")
    const wallet = Wallet.fromHdPrivateKey(masterPrivateKey);
+   console.log(wallet);
+   console.log("after wallet creation");
    const bitcoinDb = new BitcoinDb(wallet);
-   var data = this.state;
-   var idData = 0;
 
-   bitcoinDb.put({data}).then(this.putDataSuccess);
-
+   console.log("after bitcoinDb creation")
+   const data = JSON.stringify(this.state);
    
-   //wallet.getBalance().then(balance => console.log(balance))
-   //console.log(id);
-   //console.log(wallet.getAddress());
+   console.log(data);
 
-    //alert('Event name: ' + this.state.eventName +
-    // 	    '\nType of tickecting event: ' + this.state.ticketStyle +
-    // 	    '\nDate of event: '+ this.state.date +
-    // 	    '\nNumber of tickets: ' + this.state.numberOfTickets + 
-    //	    '\nPrice of tickets: ' + this.state.ticketPrice +
-    //	    '\nDescription: ' + this.state.description);
+   bitcoinDb.put({
+     eventName: this.state.eventName,
+     numberOfTickets: this.state.numberOfTickets,
+     ticketStyle: this.state.ticketStyle,
+     eventDescription: this.state.eventDescription,
+     eventPrice: this.state.eventPrice,
+     eventDate: this.state.eventDate,
+     currency: "USD"
+   }).then(resp => this.putDataSuccess(resp));
+
     return false;
   }
   
