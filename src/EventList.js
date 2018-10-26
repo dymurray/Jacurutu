@@ -47,9 +47,9 @@ class EventList extends Component {
 
   async loadEventInfoForTransactions(){
     const BitcoinToken = require('bitcointoken')
-    const bitcoinDb = new BitcoinToken.BitcoinDb()
+    const bitcoinDb = new BitcoinToken.Db()
     console.log("Event info: ");
-    console.log(this.state.eventTransactions.length);
+    console.log(this.state.eventTransactions);
     
     for( var i = 0; i < this.state.eventTransactions.length; i++){
       bitcoinDb.get(this.state.eventTransactions[i]).then(result => {

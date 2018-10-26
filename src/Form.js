@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Spinner from './Spinner.js';
-import $ from 'jquery';
 import Alert from './Alert.js';
 
 class Form extends Component {
@@ -14,7 +12,8 @@ class Form extends Component {
 	  eventPrice: 0,
 	  eventDate: null,
 	  currency: "USD",
-	  masterPrivateKey: 'tprv8ZgxMBicQKsPdjJKAVVDbBizg59Ue2nfTKn9LN3qSjfg2Sd35igCWc18ApFiMaQ25zCGxrhaiBBEP4uPdL9Ydxhk8XUdkaWVo4Gb4DBz1Ec'
+	  masterPrivateKey: 'tprv8ZgxMBicQKsPdjJKAVVDbBizg59Ue2nfTKn9LN3qSjfg2Sd35igCWc18ApFiMaQ25zCGxrhaiBBEP4uPdL9Ydxhk8XUdkaWVo4Gb4DBz1Ec',
+	  showLoginWarning: true
       };
   
     //bind all of the handlers for user selected input
@@ -81,20 +80,17 @@ class Form extends Component {
           eventPrice: 0,
           eventDate: null
     })
-    this.alert.showAlert();
+    this.successAlert.showThenHideAlert();
     this.props.toggleSpinner();
   }
 
   async putDataSuccess(result) {
+    console.log("inside pus data success");
     const BitcoinToken = require('bitcointoken')
-    //console.log(BitcoinToken)
-    const id = result.txId;
-    const bitcoinDb = new BitcoinToken.BitcoinDb()
-    console.log("bitcoinDB: " + bitcoinDb)
-    bitcoinDb.get(result).then(this.getDataSuccess);
-    console.log("transaction id: " + id);
+    console.log(result)
+    const txId = result.txId;
     
-    const rawResponse = await fetch('https://api.bchflip.com/transaction/' + id, {method: 'POST'}).then(this.emptyForm());
+    await fetch('https://api.bchflip.com/user/' + this.props.userInfo.googleId + '/transaction/' + txId, {method: 'POST'}).then(this.emptyForm());
   }
 
   async getDataSuccess(result) {
@@ -105,89 +101,114 @@ class Form extends Component {
   async handleSubmit(event) {
    this.props.toggleSpinner();
    event.preventDefault();
-   const masterPrivateKey = 'tprv8ZgxMBicQKsPdjJKAVVDbBizg59Ue2nfTKn9LN3qSjfg2Sd35igCWc18ApFiMaQ25zCGxrhaiBBEP4uPdL9Ydxhk8XUdkaWVo4Gb4DBz1Ec'
+   //const masterPrivateKey = this.props.userInfo.xprivkey;
+   const masterPrivateKey = 'tprv8ZgxMBicQKsPdjJKAVVDbBizg59Ue2nfTKn9LN3qSjfg2Sd35igCWc18ApFiMaQ25zCGxrhaiBBEP4uPdL9Ydxhk8XUdkaWVo4Gb4DBz1Ec';
+   console.log(masterPrivateKey);
    const BitcoinToken = require('bitcointoken');
    const Wallet = BitcoinToken.Wallet;
-   const BitcoinDb = BitcoinToken.BitcoinDb;
+   const BitcoinDb = BitcoinToken.Db;
+   console.log("before wallet creation")
    const wallet = Wallet.fromHdPrivateKey(masterPrivateKey);
+   console.log(wallet);
+   console.log("after wallet creation");
    const bitcoinDb = new BitcoinDb(wallet);
-   var data = this.state;
-   var idData = 0;
 
-   bitcoinDb.put({data}).then(this.putDataSuccess);
-
+   console.log("after bitcoinDb creation")
+   const data = JSON.stringify(this.state);
    
-   //wallet.getBalance().then(balance => console.log(balance))
-   //console.log(id);
-   //console.log(wallet.getAddress());
+   console.log(data);
 
-    //alert('Event name: ' + this.state.eventName +
-    // 	    '\nType of tickecting event: ' + this.state.ticketStyle +
-    // 	    '\nDate of event: '+ this.state.date +
-    // 	    '\nNumber of tickets: ' + this.state.numberOfTickets + 
-    //	    '\nPrice of tickets: ' + this.state.ticketPrice +
-    //	    '\nDescription: ' + this.state.description);
+   bitcoinDb.put({
+     eventName: this.state.eventName,
+     numberOfTickets: this.state.numberOfTickets,
+     ticketStyle: this.state.ticketStyle,
+     eventDescription: this.state.eventDescription,
+     eventPrice: this.state.eventPrice,
+     eventDate: this.state.eventDate,
+     currency: "USD"
+   }).then(resp => this.putDataSuccess(resp));
+
     return false;
   }
+  
+  componentDidMount() {
+    if (this.props.userInfo !== null) {
+      document.getElementById("formFieldset").disabled = false;
+      this.loginAlert.hideAlert();
+    }
+    else {
+      this.loginAlert.showAlert();
+    }
+  }
+
 
   render() {
+    console.log(this.props.userInfo);
+  // document.getElementById("#formFieldset").attr("disabled", false); 
     return (
      <div className="card col-md-6 col-centered">
        <div className="card-body">
-        <form id="eventForm" onSubmit={this.handleSubmit}>
- 	  <div className="form-group">
-            <label htmlFor="eventName">Name of event</label>
-	    <input id="eventName" type="string"
-	      className="form-control"
-	      placeholder="Enter the name of the event"
-	      onChange={this.handleNameChange} required/>
-	  </div>
-	  <div className="form-group">
-	    <label htmlFor="eventType">Type of event</label>
-	    <select className="form-control" id="eventType"
-	      value={this.state.ticketStyle} 
-	      onChange={this.handleTicketStyleChange}>
-	    	<option value="general">General Admission</option>
-	    	<option value="seating">Seating Chart</option>
-	    	<option value="general_seating">Combination</option>
-	    </select>
-	  </div>
-	  <div className="form-group">
-	    <label htmlFor="eventDate">Date</label>
-	    <input id="eventDate" type="date" 
-	      className="form-control" 
-	      placeholder="Enter the date of the event" 
-	      onChange={this.handleDateChange}
-	    required/>
-	  </div>
-	  <div className="form-group">
-	    <label htmlFor="numTickets">Number of tickets</label>
-	    <input id="numTickets" type="number" className="form-control" 
-	      placeholder="Enter number of tickets" 
-	      onChange={this.handleNumberOfTicketsChange} required/>
-	    <div className="invalid-feedback">
-	      <p>Please provide a valid number of tickets.</p>
+	<div id="loginWarning"> 
+	  <Alert ref={instance => {this.loginAlert = instance}}  
+	    message="You need to be logged in to create an event, please login" 
+	    style="danger" />
+	</div>
+        <form id="eventForm" onSubmit={this.handleSubmit} >
+ 	  <fieldset id="formFieldset"  disabled>
+	    <div className="form-group">
+              <label htmlFor="eventName">Name of event</label>
+	      <input id="eventName" type="string"
+	        className="form-control"
+	        placeholder="Enter the name of the event"
+	        onChange={this.handleNameChange} required/>
 	    </div>
-	  </div>
-	  <div>
-	    <label htmlFor="ticketPrice">Ticket price</label>
-	    <input id="ticketPrice" type="number" className="form-control" 
-	      min="0.01" max="100000" step=".01" 
-	      placeholder="Enter price of the ticket" 
-	      onChange={this.handleTicketPriceChange} required />
-	  </div>
-	  <div className="form-group">
-	    <label htmlFor="eventDescription">Event description</label>
-	    <textarea className="form-control" id="eventDescription" 
-	      rows="3" onChange={this.handleDescriptionChange} 
-	      placeholder="Enter a description of the event that you are holding">
-	    </textarea>
-  	  </div>
-          <button type="submit" value="Submit" 
-	    className="btn btn-secondary">Submit</button>
-        </form>
+	    <div className="form-group">
+	      <label htmlFor="eventType">Type of event</label>
+	      <select className="form-control" id="eventType"
+	        value={this.state.ticketStyle} 
+	        onChange={this.handleTicketStyleChange}>
+	    	  <option value="general">General Admission</option>
+	    	  <option value="seating">Seating Chart</option>
+	    	  <option value="general_seating">Combination</option>
+	      </select>
+	    </div>
+	    <div className="form-group">
+	      <label htmlFor="eventDate">Date</label>
+	      <input id="eventDate" type="date" 
+	        className="form-control" 
+	        placeholder="Enter the date of the event" 
+	        onChange={this.handleDateChange}
+	      required/>
+	    </div>
+	    <div className="form-group">
+	      <label htmlFor="numTickets">Number of tickets</label>
+	      <input id="numTickets" type="number" className="form-control" 
+	        placeholder="Enter number of tickets" 
+	        onChange={this.handleNumberOfTicketsChange} required/>
+	      <div className="invalid-feedback">
+	        <p>Please provide a valid number of tickets.</p>
+	      </div>
+	    </div>
+	    <div>
+	      <label htmlFor="ticketPrice">Ticket price</label>
+	      <input id="ticketPrice" type="number" className="form-control" 
+	        min="0.01" max="100000" step=".01" 
+	        placeholder="Enter price of the ticket" 
+	        onChange={this.handleTicketPriceChange} required />
+	    </div>
+	    <div className="form-group">
+	      <label htmlFor="eventDescription">Event description</label>
+	      <textarea className="form-control" id="eventDescription" 
+	        rows="3" onChange={this.handleDescriptionChange} 
+	        placeholder="Enter a description of the event that you are holding">
+	      </textarea>
+  	    </div>
+            <button type="submit" value="Submit" 
+	      className="btn btn-secondary">Submit</button>
+          </fieldset>
+	</form>
       </div>
-      <Alert ref={instance => {this.alert = instance}}  message="Successfully created the event" />
+      <Alert ref={instance => {this.successAlert = instance}}  message="Successfully created the event" />
     </div>
     );
   }
